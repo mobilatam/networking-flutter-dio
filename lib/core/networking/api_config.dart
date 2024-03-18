@@ -1,0 +1,46 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:networking_flutter_dio/core/networking/api_service.dart';
+import 'package:networking_flutter_dio/core/networking/dio_service.dart';
+import 'package:networking_flutter_dio/core/networking/interceptors/api_interceptor.dart';
+import 'package:networking_flutter_dio/core/networking/interceptors/logging_interceptor.dart';
+import 'package:networking_flutter_dio/core/networking/interceptors/refresh_token_interceptor.dart';
+
+class ApiRest {
+  factory ApiRest() {
+    return _instance;
+  }
+  ApiRest._internal();
+  static final ApiRest _instance = ApiRest._internal();
+
+  late ApiService instance;
+
+  ApiService get service => instance;
+
+  static Future<void> initialize({
+    required Future<String> token,
+    String apiUrl = '',
+    bool refreshTokenInterceptor = false,
+  }) async {
+    final baseOptions = BaseOptions(
+      persistentConnection: true,
+      baseUrl: apiUrl,
+      connectTimeout: const Duration(seconds: 20),
+    );
+    final dio = Dio(baseOptions);
+    final interceptors = <Interceptor>[
+      ApiInterceptor(
+        token: token,
+      ),
+      if (refreshTokenInterceptor) RefreshTokenInterceptor(dioClient: dio),
+      if (kDebugMode) LoggingInterceptor(),
+    ];
+    dio.interceptors.addAll(interceptors);
+    final dioService = DioService(
+      dioClient: dio,
+    );
+    _instance.instance = ApiService(
+      dioService,
+    );
+  }
+}
