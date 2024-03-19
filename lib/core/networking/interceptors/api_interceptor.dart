@@ -1,11 +1,19 @@
 import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
 
 class ApiInterceptor extends Interceptor {
   ApiInterceptor({
     required this.token,
   }) : super();
+
   final Future<String>? token;
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    return handler.next(
+      err,
+    );
+  }
+
   @override
   Future<void> onRequest(
     RequestOptions options,
@@ -17,7 +25,7 @@ class ApiInterceptor extends Interceptor {
         options.headers.addAll(
           {
             'Authorization': 'Bearer $tokenData',
-            'language': Intl.systemLocale.split('_').firstOrNull ?? "es",
+            'language': options.extra['language'],
           },
         );
       }
@@ -25,7 +33,7 @@ class ApiInterceptor extends Interceptor {
       options.extra.remove('requiresAuthToken');
     } else {
       options.headers.addAll(
-        {'language': Intl.systemLocale.split('_').firstOrNull ?? "es"},
+        {'language': options.extra['language']},
       );
     }
     return handler.next(
@@ -40,13 +48,6 @@ class ApiInterceptor extends Interceptor {
   ) {
     return handler.next(
       response,
-    );
-  }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    return handler.next(
-      err,
     );
   }
 }
