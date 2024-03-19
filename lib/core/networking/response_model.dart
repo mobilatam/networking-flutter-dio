@@ -1,4 +1,5 @@
-import 'package:networking_flutter_dio/core/helper/typedefs.dart';
+
+import '../helper/typedefs.dart';
 
 class ResponseHeadersModel {
   const ResponseHeadersModel({
