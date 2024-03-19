@@ -20,13 +20,13 @@ class ApiInterceptor extends Interceptor {
             'language': Intl.systemLocale.split('_').firstOrNull ?? "es",
           },
         );
-      } else {
-        options.headers.addAll(
-          {'language': Intl.systemLocale.split('_').firstOrNull ?? "es"},
-        );
       }
 
       options.extra.remove('requiresAuthToken');
+    } else {
+      options.headers.addAll(
+        {'language': Intl.systemLocale.split('_').firstOrNull ?? "es"},
+      );
     }
     return handler.next(
       options,
