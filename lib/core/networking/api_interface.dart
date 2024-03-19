@@ -8,7 +8,6 @@ abstract class ApiInterface {
     required String endpoint,
     required T Function(ResponseModel<JSON> response) converter,
     Object? data,
-    
     bool requiresAuthToken = true,
   });
 
@@ -17,7 +16,6 @@ abstract class ApiInterface {
     required T Function(JSON responseBody) converter,
     JSON? queryParams,
     String? language,
-
     bool requiresAuthToken = true,
   });
 

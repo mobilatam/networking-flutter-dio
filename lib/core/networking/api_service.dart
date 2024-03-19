@@ -52,7 +52,7 @@ class ApiService implements ApiInterface {
     required String endpoint,
     required T Function(JSON responseBody) converter,
     JSON? queryParams,
-    String? language,
+    String? language = 'es',
     bool requiresAuthToken = true,
   }) async {
     List<Object?> body;
@@ -63,7 +63,7 @@ class ApiService implements ApiInterface {
         options: Options(
           extra: <String, Object?>{
             'requiresAuthToken': requiresAuthToken,
-            'language': language ?? 'es',
+            'language': language,
           },
         ),
         queryParams: queryParams,
@@ -99,19 +99,18 @@ class ApiService implements ApiInterface {
     required String endpoint,
     required T Function(JSON response) converter,
     JSON? queryParams,
-    String? language,
+    String? language = 'es',
     bool requiresAuthToken = true,
   }) async {
     JSON body;
     try {
-      // Entire map of response
       final data = await _dioService.get<JSON>(
         endpoint: endpoint,
         queryParams: queryParams,
         options: Options(
           extra: <String, Object?>{
             'requiresAuthToken': requiresAuthToken,
-            'language': language ?? 'es',
+            'language': language,
           },
         ),
       );
