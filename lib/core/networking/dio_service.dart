@@ -42,6 +42,7 @@ class DioService {
     final response = await _dio.get<JSON>(
       endpoint,
       queryParameters: queryParams,
+      options: options,
     );
     return ResponseModel<R>.fromJson(response.data!);
   }
