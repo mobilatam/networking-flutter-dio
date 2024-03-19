@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 
 class ApiInterceptor extends Interceptor {
   ApiInterceptor({
@@ -14,7 +15,14 @@ class ApiInterceptor extends Interceptor {
       if (options.extra['requiresAuthToken'] == true) {
         final tokenData = await token;
         options.headers.addAll(
-          {'Authorization': 'Bearer $tokenData'},
+          {
+            'Authorization': 'Bearer $tokenData',
+            'language': Intl.systemLocale.split('_').firstOrNull ?? "es",
+          },
+        );
+      } else {
+        options.headers.addAll(
+          {'language': Intl.systemLocale.split('_').firstOrNull ?? "es"},
         );
       }
 
