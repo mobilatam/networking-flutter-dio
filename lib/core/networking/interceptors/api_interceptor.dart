@@ -31,6 +31,12 @@ class ApiInterceptor extends Interceptor {
             'language': options.extra['language'],
           },
         );
+      }else{
+        options.headers.addAll(
+          {
+            'language': options.extra['language'],
+          },
+        );
       }
 
       options.extra.remove('requiresAuthToken');
