@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiInterceptor extends Interceptor {
   ApiInterceptor({
-    required this.token,
+    required this.secureStorage,
+    required this.authTokenKey,
   }) : super();
 
-  final Future<String>? token;
+  final FlutterSecureStorage secureStorage;
+  final String authTokenKey;
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
@@ -21,10 +24,10 @@ class ApiInterceptor extends Interceptor {
   ) async {
     if (options.extra.containsKey('requiresAuthToken')) {
       if (options.extra['requiresAuthToken'] == true) {
-        final tokenData = await token;
+        var token = await secureStorage.read(key: authTokenKey) ?? "NO_TOKEN";
         options.headers.addAll(
           {
-            'Authorization': 'Bearer $tokenData',
+            'Authorization': 'Bearer $token',
             'language': options.extra['language'],
           },
         );

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:networking_flutter_dio/core/networking/api_service.dart';
 import 'package:networking_flutter_dio/core/networking/dio_service.dart';
 import 'package:networking_flutter_dio/core/networking/interceptors/api_interceptor.dart';
@@ -18,9 +19,10 @@ class ApiRest {
   ApiService get service => instance;
 
   static Future<void> initialize({
-    required Future<String> token,
     String apiUrl = '',
     bool refreshTokenInterceptor = false,
+    required FlutterSecureStorage  secureStorage,
+    required String authTokenKey,
   }) async {
     final baseOptions = BaseOptions(
       persistentConnection: true,
@@ -30,7 +32,8 @@ class ApiRest {
     final dio = Dio(baseOptions);
     final interceptors = <Interceptor>[
       ApiInterceptor(
-        token: token,
+        secureStorage: secureStorage,
+        authTokenKey: authTokenKey,
       ),
       if (refreshTokenInterceptor) RefreshTokenInterceptor(dioClient: dio),
       if (kDebugMode) LoggingInterceptor(),
