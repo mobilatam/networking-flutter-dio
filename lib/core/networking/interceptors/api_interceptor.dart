@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -10,8 +12,18 @@ class ApiInterceptor extends Interceptor {
   final FlutterSecureStorage secureStorage;
   final String authTokenKey;
 
+  static final _authStreamController = StreamController<bool>();
+  static Stream<bool> get verifyTokenStream => _authStreamController.stream;
+
+  static void initStreamValue(bool initialValue) {
+    _authStreamController.add(false);
+  }
+
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    if (err.response?.statusCode == 401) {
+      _authStreamController.add(true);
+    }
     return handler.next(
       err,
     );
@@ -31,7 +43,7 @@ class ApiInterceptor extends Interceptor {
             'language': options.extra['language'],
           },
         );
-      }else{
+      } else {
         options.headers.addAll(
           {
             'language': options.extra['language'],
