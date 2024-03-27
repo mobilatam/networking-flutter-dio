@@ -12,11 +12,11 @@ class ApiInterceptor extends Interceptor {
   final FlutterSecureStorage secureStorage;
   final String authTokenKey;
 
-  static final _authStreamController = StreamController<bool>();
+  static final _authStreamController = StreamController<bool>.broadcast();
   static Stream<bool> get verifyTokenStream => _authStreamController.stream;
 
-  static void initStreamValue(bool initialValue) {
-    _authStreamController.add(false);
+  static void initialTokenStreamValue(bool initialValue) {
+    _authStreamController.add(initialValue);
   }
 
   @override
