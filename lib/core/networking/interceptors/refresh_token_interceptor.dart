@@ -40,7 +40,6 @@ class RefreshTokenInterceptor extends Interceptor {
         var userId = getUserId();
         var token = await getToken();
         final tokenDio = Dio()..options = _dio.options;
-        _dio.close();
         if (userId != null && token != null) {
           final id = userId;
           final data = {
