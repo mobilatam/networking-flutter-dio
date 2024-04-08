@@ -6,6 +6,7 @@ import 'package:networking_flutter_dio/core/networking/dio_service.dart';
 import 'package:networking_flutter_dio/core/networking/interceptors/api_interceptor.dart';
 import 'package:networking_flutter_dio/core/networking/interceptors/logging_interceptor.dart';
 import 'package:networking_flutter_dio/core/networking/interceptors/refresh_token_interceptor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiRest {
   factory ApiRest() {
@@ -21,8 +22,10 @@ class ApiRest {
   static Future<void> initialize({
     String apiUrl = '',
     bool refreshTokenInterceptor = false,
-    required FlutterSecureStorage  secureStorage,
+    required FlutterSecureStorage secureStorage,
+    SharedPreferences? sharedPreferences,
     required String authTokenKey,
+    String? authUserKey,
   }) async {
     final baseOptions = BaseOptions(
       persistentConnection: true,
@@ -35,7 +38,14 @@ class ApiRest {
         secureStorage: secureStorage,
         authTokenKey: authTokenKey,
       ),
-      if (refreshTokenInterceptor) RefreshTokenInterceptor(dioClient: dio),
+      if (refreshTokenInterceptor)
+        RefreshTokenInterceptor(
+          dioClient: dio,
+          secureStorage: secureStorage,
+          authTokenKey: authTokenKey,
+          authUserKey: authUserKey,
+          urlTokenRefreshServer: '$apiUrl/auth/refresh-token',
+        ),
       if (kDebugMode) LoggingInterceptor(),
     ];
     dio.interceptors.addAll(interceptors);

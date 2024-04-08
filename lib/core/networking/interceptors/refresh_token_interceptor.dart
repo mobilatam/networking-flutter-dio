@@ -1,19 +1,29 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:networking_flutter_dio/core/helper/typedefs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RefreshTokenInterceptor extends Interceptor {
   RefreshTokenInterceptor({
     required Dio dioClient,
-    this.userId,
     this.urlTokenRefreshServer,
+    required this.secureStorage,
+    this.sharedPreferences,
+    this.authTokenKey,
+    this.authUserKey,
   }) : _dio = dioClient;
-  final Future<String> Function()? userId;
   final String? urlTokenRefreshServer;
+  final FlutterSecureStorage secureStorage;
+  final SharedPreferences? sharedPreferences;
+  final String? authTokenKey;
+  final String? authUserKey;
 
   final Dio _dio;
 
-  String get tokenExpiredException => 'TokenExpiredException';
+  String get tokenExpiredException => 'TokenExpiredError';
 
   @override
   Future<void> onError(
@@ -22,17 +32,20 @@ class RefreshTokenInterceptor extends Interceptor {
   ) async {
     if (err.response != null) {
       final data = err.response?.data as JSON?;
-      final headers = data?['headers'] as JSON?;
+      final headers = data?['errors'] as JSON?;
 
-      final code = headers?['code'] as String?;
+      final code = headers?['name'] as String?;
+
       if (code == tokenExpiredException) {
+        var userId = getUserId();
+        var token = await getToken();
         final tokenDio = Dio()..options = _dio.options;
-
         _dio.close();
-        if (userId != null) {
-          final id = await userId!();
+        if (userId != null && token != null) {
+          final id = userId;
           final data = {
-            'id': id,
+            'username': id,
+            'refreshtoken': token,
           };
 
           final newToken = await _refreshTokenRequest(
@@ -79,21 +92,13 @@ class RefreshTokenInterceptor extends Interceptor {
 
       debugPrint('\tStatus code:${response.statusCode}');
       debugPrint('\tResponse: ${response.data}');
-      // Check new token success
-      final headers = data['headers'] as JSON;
-      final success = headers['error'] == 0;
 
-      if (success) {
-        debugPrint('<-- END REFRESH');
-        final body = data['body'] as JSON;
-
-        return body['token'] as String;
-      } else {
-        throw Exception(headers['message']);
-      }
+      debugPrint('<-- END REFRESH');
+      final body = data['body'] as JSON;
+      var token = body['token'] as String;
+      await setAuthToken(token);
+      return token;
     } on Exception catch (ex) {
-      // only caught here for logging
-      // forward to try-catch in dio_service for handling
       debugPrint('\t--> ERROR');
       if (ex is DioException) {
         final de = ex;
@@ -110,5 +115,35 @@ class RefreshTokenInterceptor extends Interceptor {
     } finally {
       _dio.close();
     }
+  }
+
+  String? getUserId() {
+    try {
+      final dataMap = sharedPreferences?.getString(authUserKey ?? 'NO-KEY');
+      if (dataMap == null) {
+        return null;
+      }
+      final data = jsonDecode(dataMap) as JSON;
+      return data['username'] as String;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<String?> getToken() async {
+    try {
+      var token = await secureStorage.read(key: authTokenKey ?? "NO_TOKEN");
+
+      if (token == null) {
+        return null;
+      }
+      return token;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<void> setAuthToken(String tokenNew) async {
+    await secureStorage.write(key: authTokenKey ?? "NO_TOKEN", value: tokenNew);
   }
 }

@@ -33,7 +33,7 @@
     },
     {
       "name": "dio",
-      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/dio-5.4.1",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/dio-5.4.2+1",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     },
@@ -48,6 +48,12 @@
       "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/ffi-2.1.2",
       "packageUri": "lib/",
       "languageVersion": "3.3"
+    },
+    {
+      "name": "file",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/file-7.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "flutter",
@@ -218,6 +224,48 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "shared_preferences",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences-2.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "shared_preferences_android",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences_android-2.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "shared_preferences_foundation",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.3.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "shared_preferences_linux",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences_linux-2.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "shared_preferences_platform_interface",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences_platform_interface-2.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "shared_preferences_web",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences_web-2.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "shared_preferences_windows",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences_windows-2.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///Users/miguelangelflores/fvm/versions/stable/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -278,6 +326,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "web",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/web-0.5.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "win32",
       "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/win32-5.3.0",
       "packageUri": "lib/",
@@ -296,7 +350,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-03-21T13:57:32.940379Z",
+  "generated": "2024-04-08T18:56:24.743309Z",
   "generator": "pub",
-  "generatorVersion": "3.3.1"
+  "generatorVersion": "3.3.3"
 }
