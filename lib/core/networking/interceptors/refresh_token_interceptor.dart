@@ -12,14 +12,15 @@ class RefreshTokenInterceptor extends Interceptor {
     this.urlTokenRefreshServer,
     required this.secureStorage,
     this.sharedPreferences,
-    this.authTokenKey,
     this.authUserKey,
+    this.authTokenRefreshKey,
   }) : _dio = dioClient;
   final String? urlTokenRefreshServer;
   final FlutterSecureStorage secureStorage;
   final SharedPreferences? sharedPreferences;
-  final String? authTokenKey;
   final String? authUserKey;
+  final String? authTokenRefreshKey;
+  
 
   final Dio _dio;
 
@@ -129,7 +130,7 @@ class RefreshTokenInterceptor extends Interceptor {
 
   Future<String?> getToken() async {
     try {
-      var token = await secureStorage.read(key: authTokenKey ?? "NO_TOKEN");
+      var token = await secureStorage.read(key: authTokenRefreshKey ?? "NO_TOKEN");
 
       if (token == null) {
         return null;
@@ -141,6 +142,6 @@ class RefreshTokenInterceptor extends Interceptor {
   }
 
   Future<void> setAuthToken(String tokenNew) async {
-    await secureStorage.write(key: authTokenKey ?? "NO_TOKEN", value: tokenNew);
+    await secureStorage.write(key: authTokenRefreshKey ?? "NO_TOKEN", value: tokenNew);
   }
 }

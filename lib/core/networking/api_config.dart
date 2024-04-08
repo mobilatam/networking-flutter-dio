@@ -25,6 +25,7 @@ class ApiRest {
     required FlutterSecureStorage secureStorage,
     SharedPreferences? sharedPreferences,
     required String authTokenKey,
+    String? authTokenRefreshKey,
     String? authUserKey,
   }) async {
     final baseOptions = BaseOptions(
@@ -42,7 +43,7 @@ class ApiRest {
         RefreshTokenInterceptor(
           dioClient: dio,
           secureStorage: secureStorage,
-          authTokenKey: authTokenKey,
+          authTokenRefreshKey: authTokenRefreshKey,
           sharedPreferences: sharedPreferences,
           authUserKey: authUserKey,
           urlTokenRefreshServer: '$apiUrl/auth/refresh-token',
