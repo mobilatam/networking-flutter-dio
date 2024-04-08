@@ -111,8 +111,6 @@ class RefreshTokenInterceptor extends Interceptor {
       debugPrint('<-- END REFRESH');
 
       return null;
-    } finally {
-      _dio.close();
     }
   }
 
