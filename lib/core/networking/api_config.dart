@@ -43,6 +43,7 @@ class ApiRest {
           dioClient: dio,
           secureStorage: secureStorage,
           authTokenKey: authTokenKey,
+          sharedPreferences: sharedPreferences,
           authUserKey: authUserKey,
           urlTokenRefreshServer: '$apiUrl/auth/refresh-token',
         ),
