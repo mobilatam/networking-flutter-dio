@@ -97,8 +97,9 @@ class RefreshTokenInterceptor extends Interceptor {
       debugPrint('\tResponse: ${response.data}');
 
       debugPrint('<-- END REFRESH');
-      final body = data['body'] as JSON;
-      var token = body['token'] as String;
+      final responseData = response.data as JSON;
+      final body = responseData['body'] as JSON;
+      final token = body['token'] as String;
       await setAuthToken(token);
       return token;
     } on Exception catch (ex) {
