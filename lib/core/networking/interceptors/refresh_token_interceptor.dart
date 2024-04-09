@@ -14,12 +14,15 @@ class RefreshTokenInterceptor extends Interceptor {
     this.sharedPreferences,
     this.authUserKey,
     this.authTokenRefreshKey,
+    this.authTokenKey,
   }) : _dio = dioClient;
   final String? urlTokenRefreshServer;
   final FlutterSecureStorage secureStorage;
   final SharedPreferences? sharedPreferences;
   final String? authUserKey;
   final String? authTokenRefreshKey;
+  final String? authTokenKey;
+  
   
 
   final Dio _dio;
@@ -142,6 +145,6 @@ class RefreshTokenInterceptor extends Interceptor {
   }
 
   Future<void> setAuthToken(String tokenNew) async {
-    await secureStorage.write(key: authTokenRefreshKey ?? "NO_TOKEN", value: tokenNew);
+    await secureStorage.write(key: authTokenKey ?? "NO_TOKEN", value: tokenNew);
   }
 }
