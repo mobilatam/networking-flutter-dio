@@ -65,9 +65,11 @@ class RefreshTokenInterceptor extends Interceptor {
           final response = await _dio.request<JSON>(
             err.requestOptions.path,
             data: err.requestOptions.data,
+
             cancelToken: err.requestOptions.cancelToken,
             options: Options(
               headers: <String, Object?>{'Authorization': 'Bearer $newToken'},
+              method: err.requestOptions.method,
             ),
           );
           return handler.resolve(response);
