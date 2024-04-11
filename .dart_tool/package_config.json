@@ -225,9 +225,9 @@
     },
     {
       "name": "shared_preferences",
-      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences-2.2.2",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences-2.2.3",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.1"
     },
     {
       "name": "shared_preferences_android",
@@ -350,7 +350,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-04-08T18:56:24.743309Z",
+  "generated": "2024-04-11T19:50:53.325987Z",
   "generator": "pub",
   "generatorVersion": "3.3.3"
 }
