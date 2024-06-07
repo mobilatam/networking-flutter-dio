@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:networking_flutter_dio/core/helper/typedefs.dart';
 import 'package:networking_flutter_dio/core/networking/api_interface.dart';
@@ -142,6 +144,8 @@ class ApiService implements ApiInterface {
     required T Function(ResponseModel<JSON> response) converter,
     JSON? headers,
     bool requiresAuthToken = true,
+    StreamController<double>? progressController
+
   }) async {
     ResponseModel<JSON> response;
 
@@ -149,6 +153,7 @@ class ApiService implements ApiInterface {
       response = await _dioService.post<JSON>(
         endpoint: endpoint,
         data: data,
+        progressController: progressController,
         options: Options(
           headers: headers,
           extra: <String, Object?>{

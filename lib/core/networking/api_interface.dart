@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:networking_flutter_dio/core/networking/response_model.dart';
 import 'package:networking_flutter_dio/core/helper/typedefs.dart';
 
@@ -32,11 +34,13 @@ abstract class ApiInterface {
     required Object data,
     required T Function(ResponseModel<JSON> response) converter,
     bool requiresAuthToken = true,
+    StreamController<double>? progressController
   });
   Future<T> updateData<T>({
     required String endpoint,
     required Object data,
     required T Function(ResponseModel<JSON> response) converter,
     bool requiresAuthToken = true,
+    
   });
 }

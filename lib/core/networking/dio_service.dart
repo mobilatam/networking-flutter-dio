@@ -66,12 +66,16 @@ class DioService {
     Object? data,
     Options? options,
     CancelToken? cancelToken,
+    StreamController<double>? progressController
   }) async {
     final response = await _dio.post<JSON>(
       endpoint,
       data: data,
       options: options,
+      onSendProgress: (count, total) => progressController?.add(count/total),
     );
+    progressController?.close();
+
     return ResponseModel<R>.fromJson(response.data!);
   }
 }
