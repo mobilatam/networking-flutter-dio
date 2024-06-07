@@ -72,9 +72,12 @@ class DioService {
       endpoint,
       data: data,
       options: options,
-      onSendProgress: (count, total) => progressController?.add(count/total),
+      onSendProgress: (count, total){
+        print(count);
+        print(total);
+        progressController?.add(count/total);
+      },
     );
-    progressController?.close();
 
     return ResponseModel<R>.fromJson(response.data!);
   }
