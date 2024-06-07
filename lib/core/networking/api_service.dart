@@ -157,8 +157,6 @@ class ApiService implements ApiInterface {
           extra: <String, Object?>{
             'requiresAuthToken': requiresAuthToken,
           },
-          contentType:
-              data is FormData ? 'multipart/form-data' : 'application/json',
         ),
       );
     } on DioException catch (ex) {

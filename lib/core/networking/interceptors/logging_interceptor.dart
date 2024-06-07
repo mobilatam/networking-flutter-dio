@@ -54,7 +54,7 @@ class LoggingInterceptor extends Interceptor {
       );
     }
 
-    if (options.data != null) {
+    if (options.data != null && options.contentType !="multipart/form-data") {
       debugPrint('\tBody: ${jsonEncode(options.data)}');
     }
 
