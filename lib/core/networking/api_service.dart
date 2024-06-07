@@ -138,15 +138,13 @@ class ApiService implements ApiInterface {
   }
 
   @override
-  Future<T> setData<T>({
-    required String endpoint,
-    required Object data,
-    required T Function(ResponseModel<JSON> response) converter,
-    JSON? headers,
-    bool requiresAuthToken = true,
-    StreamController<double>? progressController
-
-  }) async {
+  Future<T> setData<T>(
+      {required String endpoint,
+      required Object data,
+      required T Function(ResponseModel<JSON> response) converter,
+      JSON? headers,
+      bool requiresAuthToken = true,
+      StreamController<double>? progressController}) async {
     ResponseModel<JSON> response;
 
     try {
@@ -159,6 +157,8 @@ class ApiService implements ApiInterface {
           extra: <String, Object?>{
             'requiresAuthToken': requiresAuthToken,
           },
+          contentType:
+              data is FormData ? 'multipart/form-data' : 'application/json',
         ),
       );
     } on DioException catch (ex) {
