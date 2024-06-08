@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:networking_flutter_dio/core/helper/typedefs.dart';
 import 'package:networking_flutter_dio/core/networking/response_model.dart';
+
 class DioService {
   DioService({
     required Dio dioClient,
@@ -66,16 +67,14 @@ class DioService {
     Object? data,
     Options? options,
     CancelToken? cancelToken,
-    StreamController<double>? progressController
+    void Function(int, int)? onSendProgress,
   }) async {
     final response = await _dio.post<JSON>(
       endpoint,
       data: data,
       options: options,
-      onSendProgress: (count, total){
-        print(count);
-        print(total);
-        progressController?.add(count/total);
+      onSendProgress: (count, total) {
+        onSendProgress?.call(count, total);
       },
     );
 

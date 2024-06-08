@@ -138,20 +138,21 @@ class ApiService implements ApiInterface {
   }
 
   @override
-  Future<T> setData<T>(
-      {required String endpoint,
-      required Object data,
-      required T Function(ResponseModel<JSON> response) converter,
-      JSON? headers,
-      bool requiresAuthToken = true,
-      StreamController<double>? progressController}) async {
+  Future<T> setData<T>({
+    required String endpoint,
+    required Object data,
+    required T Function(ResponseModel<JSON> response) converter,
+    JSON? headers,
+    bool requiresAuthToken = true,
+    void Function(int, int)? onSendProgress,
+
+  }) async {
     ResponseModel<JSON> response;
 
     try {
       response = await _dioService.post<JSON>(
         endpoint: endpoint,
         data: data,
-        progressController: progressController,
         options: Options(
           headers: headers,
           extra: <String, Object?>{

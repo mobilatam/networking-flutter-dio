@@ -34,13 +34,12 @@ abstract class ApiInterface {
     required Object data,
     required T Function(ResponseModel<JSON> response) converter,
     bool requiresAuthToken = true,
-    StreamController<double>? progressController
+    void Function(int, int)? onSendProgress,
   });
   Future<T> updateData<T>({
     required String endpoint,
     required Object data,
     required T Function(ResponseModel<JSON> response) converter,
     bool requiresAuthToken = true,
-    
   });
 }
