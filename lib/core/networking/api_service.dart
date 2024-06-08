@@ -153,6 +153,7 @@ class ApiService implements ApiInterface {
       response = await _dioService.post<JSON>(
         endpoint: endpoint,
         data: data,
+        onSendProgress:onSendProgress,
         options: Options(
           headers: headers,
           extra: <String, Object?>{
