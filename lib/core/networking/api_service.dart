@@ -144,7 +144,7 @@ class ApiService implements ApiInterface {
     required T Function(ResponseModel<JSON> response) converter,
     JSON? headers,
     bool requiresAuthToken = true,
-    void Function(int, int)? onSendProgress,
+    void Function(int count, int total)? onSendProgress,
 
   }) async {
     ResponseModel<JSON> response;

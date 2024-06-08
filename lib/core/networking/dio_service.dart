@@ -67,7 +67,7 @@ class DioService {
     Object? data,
     Options? options,
     CancelToken? cancelToken,
-    void Function(int, int)? onSendProgress,
+    void Function(int count, int total)? onSendProgress,
   }) async {
     final response = await _dio.post<JSON>(
       endpoint,

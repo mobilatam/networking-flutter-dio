@@ -34,7 +34,7 @@ abstract class ApiInterface {
     required Object data,
     required T Function(ResponseModel<JSON> response) converter,
     bool requiresAuthToken = true,
-    void Function(int, int)? onSendProgress,
+    void Function(int count, int total)? onSendProgress,
   });
   Future<T> updateData<T>({
     required String endpoint,
