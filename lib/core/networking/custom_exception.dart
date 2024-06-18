@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:networking_flutter_dio/core/helper/typedefs.dart';
 
@@ -21,56 +20,55 @@ class CustomException implements Exception {
             return CustomException(
               exceptionType: ExceptionType.cancelException,
               statusCode: error.response?.statusCode,
-              message: message ?? 'Request cancelled prematurely',
+              message: message ?? 'Solicitud cancelada prematuramente',
             );
           case DioExceptionType.connectionTimeout:
             return CustomException(
               exceptionType: ExceptionType.connectTimeoutException,
               statusCode: error.response?.statusCode,
-              message: message ?? 'Connection not established',
+              message: message ?? 'No se pudo establecer la conexión. Por favor, verifique su conexión a Internet.',
             );
           case DioExceptionType.sendTimeout:
             return CustomException(
               exceptionType: ExceptionType.sendTimeoutException,
               statusCode: error.response?.statusCode,
-              message: message ?? 'Failed to send',
+              message: message ?? 'Error al enviar la solicitud',
             );
           case DioExceptionType.receiveTimeout:
             return CustomException(
               exceptionType: ExceptionType.receiveTimeoutException,
               statusCode: error.response?.statusCode,
-              message: message ?? 'Failed to receive',
+              message: message ?? 'Error al recibir la respuesta',
             );
           case DioExceptionType.badResponse:
             return CustomException(
               exceptionType: ExceptionType.badResponse,
               statusCode: error.response?.statusCode,
-              message: message ?? 'An error occurred while processing the server response',
+              message: message ?? 'Se produjo un error al procesar la solicitud',
             );
           case DioExceptionType.unknown:
             return CustomException(
               exceptionType: ExceptionType.unrecognizedException,
               statusCode: error.response?.statusCode,
-              message: message ?? 'An unknown error occurred',
+              message: message ?? 'Ocurrió un error desconocido',
             );
-
           case DioExceptionType.badCertificate:
             return CustomException(
               exceptionType: ExceptionType.unrecognizedException,
               statusCode: error.response?.statusCode,
-              message: message ?? 'Bad certificate',
+              message: message ?? 'Problema con el certificado',
             );
           case DioExceptionType.connectionError:
             return CustomException(
               exceptionType: ExceptionType.connectionError,
               statusCode: error.response?.statusCode,
-              message: message ?? 'Connection error',
+              message: message ?? 'Error de conexión. Por favor, verifique su conexión a Internet.',
             );
         }
       } else {
         return CustomException(
           exceptionType: ExceptionType.unrecognizedException,
-          message: 'An unknown error occurred',
+          message: 'Ocurrió un error desconocido',
         );
       }
     } on FormatException catch (e) {
@@ -81,7 +79,7 @@ class CustomException implements Exception {
     } on Exception catch (_) {
       return CustomException(
         exceptionType: ExceptionType.unrecognizedException,
-        message: 'An unknown error occurred',
+        message: 'Ocurrió un error desconocido',
       );
     }
   }
@@ -89,9 +87,10 @@ class CustomException implements Exception {
   factory CustomException.fromParsingException(Exception error) {
     return CustomException(
       exceptionType: ExceptionType.serializationException,
-      message: 'An error occurred while parsing the response',
+      message: 'Se produjo un error al analizar la respuesta',
     );
   }
+
   final String name;
   final String message;
   final String? code;
