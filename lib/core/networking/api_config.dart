@@ -49,7 +49,7 @@ class ApiRest {
           authUserKey: authUserKey,
           urlTokenRefreshServer: '$apiUrl/auth/refresh-token',
         ),
-      if (kDebugMode) LoggingInterceptor(),
+      LoggingInterceptor(),
     ];
     dio.interceptors.addAll(interceptors);
     final dioService = DioService(
