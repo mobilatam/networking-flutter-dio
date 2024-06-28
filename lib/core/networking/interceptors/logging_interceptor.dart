@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart' show debugPrint;
 
 class LoggingInterceptor extends Interceptor {
   @override
@@ -10,24 +9,24 @@ class LoggingInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) {
-    debugPrint('--> ERROR');
+    print('--> ERROR');
     final httpMethod = err.requestOptions.method.toUpperCase();
     final url = err.requestOptions.baseUrl + err.requestOptions.path;
 
-    debugPrint('\tMETHOD: $httpMethod \tURL: $url'); // GET
+    print('\tMETHOD: $httpMethod \tURL: $url'); // GET
     if (err.response != null) {
-      debugPrint('\tStatus code: ${err.response!.statusCode}');
+      print('\tStatus code: ${err.response!.statusCode}');
 
-      debugPrint('${err.response!.data}');
+      print('${err.response!.data}');
     } else if (err.error is SocketException) {
       const message = 'No internet connectivity';
-      debugPrint('\tException: FetchDataException');
-      debugPrint('\tMessage: $message');
+      print('\tException: FetchDataException');
+      print('\tMessage: $message');
     } else {
-      debugPrint('\tUnknown Error');
+      print('\tUnknown Error');
     }
 
-    debugPrint('<-- END ERROR');
+    print('<-- END ERROR');
 
     super.onError(err, handler);
   }
@@ -40,25 +39,25 @@ class LoggingInterceptor extends Interceptor {
     final httpMethod = options.method.toUpperCase();
     final url = options.baseUrl + options.path;
 
-    debugPrint('--> $httpMethod $url'); //GET www.example.com/mock_path/all
+    print('--> $httpMethod $url'); //GET www.example.com/mock_path/all
 
-    debugPrint('\tHeaders:');
+    print('\tHeaders:');
     options.headers.forEach(
-      (k, Object? v) => debugPrint('\t\t$k: $v'),
+      (k, Object? v) => print('\t\t$k: $v'),
     );
 
     if (options.queryParameters.isNotEmpty) {
-      debugPrint('\tqueryParams:');
+      print('\tqueryParams:');
       options.queryParameters.forEach(
-        (k, Object? v) => debugPrint('\t\t$k: $v'),
+        (k, Object? v) => print('\t\t$k: $v'),
       );
     }
 
     if (options.data != null && options.contentType !="multipart/form-data") {
-      debugPrint('\tBody: ${jsonEncode(options.data)}');
+      print('\tBody: ${jsonEncode(options.data)}');
     }
 
-    debugPrint('--> END $httpMethod');
+    print('--> END $httpMethod');
 
     super.onRequest(options, handler);
   }
@@ -68,19 +67,19 @@ class LoggingInterceptor extends Interceptor {
     Response<dynamic> response,
     ResponseInterceptorHandler handler,
   ) {
-    debugPrint('<-- RESPONSE');
+    print('<-- RESPONSE');
 
-    debugPrint('\tStatus code: ${response.statusCode}');
+    print('\tStatus code: ${response.statusCode}');
 
     if (response.statusCode == 304) {
-      debugPrint('\tSource: Cache');
+      print('\tSource: Cache');
     } else {
-      debugPrint('\tSource: Network');
+      print('\tSource: Network');
     }
 
-    debugPrint('\tResponse: ${jsonEncode(response.data)}');
+    print('\tResponse: ${jsonEncode(response.data)}');
 
-    debugPrint('<-- END HTTP');
+    print('<-- END HTTP');
 
     super.onResponse(response, handler);
   }
