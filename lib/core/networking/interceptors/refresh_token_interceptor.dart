@@ -35,8 +35,9 @@ class RefreshTokenInterceptor extends Interceptor {
     ErrorInterceptorHandler handler,
   ) async {
     print(err.response.toString());
-    print(err.error.toString());
-    print(err.requestOptions.toString());
+    print(err.type.toString());
+    print(err.requestOptions.baseUrl.toString());
+    print(err.requestOptions.data.toString());
     if (err.response != null) {
       final data = err.response?.data as JSON?;
       final headers = data?['errors'] as JSON?;
