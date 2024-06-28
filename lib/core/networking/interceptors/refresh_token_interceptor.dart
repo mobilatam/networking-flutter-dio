@@ -34,6 +34,7 @@ class RefreshTokenInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
+    print(err.response.toString());
     if (err.response != null) {
       final data = err.response?.data as JSON?;
       final headers = data?['errors'] as JSON?;

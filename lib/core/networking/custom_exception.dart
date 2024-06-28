@@ -12,6 +12,8 @@ class CustomException implements Exception {
 
   factory CustomException.fromDioException(Exception error) {
     try {
+    print(error.toString());
+
       if (error is DioException) {
         final responseData = error.response?.data as JSON?;
         final message = responseData?['message'] as String?;
