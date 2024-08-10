@@ -71,17 +71,6 @@ class ApiService implements ApiInterface {
         queryParams: queryParams,
       );
       body = data.body;
-    } on DioException catch (ex) {
-      throw CustomException.fromDioException(
-        ex,
-      );
-    } on Exception catch (ex) {
-      throw CustomException.fromDioException(
-        ex,
-      );
-    }
-
-    try {
       return body
           .map(
             (dataMap) => converter(
@@ -89,9 +78,17 @@ class ApiService implements ApiInterface {
             ),
           )
           .toList();
-    } on Exception catch (ex) {
+    } on DioException catch (ex) {
+      throw CustomException.fromDioException(
+        ex,
+      );
+    } on FormatException catch (ex) {
       throw CustomException.fromParsingException(
         ex,
+      );
+    } catch (ex) {
+      throw CustomException.fromDioException(
+        Exception(ex),
       );
     }
   }
@@ -145,7 +142,6 @@ class ApiService implements ApiInterface {
     JSON? headers,
     bool requiresAuthToken = true,
     void Function(int count, int total)? onSendProgress,
-
   }) async {
     ResponseModel<JSON> response;
 
@@ -153,7 +149,7 @@ class ApiService implements ApiInterface {
       response = await _dioService.post<JSON>(
         endpoint: endpoint,
         data: data,
-        onSendProgress:onSendProgress,
+        onSendProgress: onSendProgress,
         options: Options(
           headers: headers,
           extra: <String, Object?>{

@@ -1,4 +1,3 @@
-
 import '../helper/typedefs.dart';
 
 class ResponseHeadersModel {
@@ -20,6 +19,29 @@ class ResponseModel<T> {
     required this.body,
   });
 
+  static T _parseBody<T>(dynamic body) {
+    if (body == null) {
+      throw const FormatException('Body cannot be null');
+    }
+
+    if (T == List<dynamic>) {
+      if (body is List) {
+        return body as T;
+      }else {
+        throw FormatException(
+            'Expected List or Map for body, but got ${body.runtimeType}');
+      }
+    } else {
+      // Para tipos que no son List, asumimos que es un Map (JSON)
+      if (body is Map) {
+        return body as T;
+      } else {
+        throw FormatException(
+            'Expected Map for body, but got ${body.runtimeType}');
+      }
+    }
+  }
+
   factory ResponseModel.fromJson(JSON json) {
     return ResponseModel(
       headers: json['headers'] == null
@@ -27,7 +49,7 @@ class ResponseModel<T> {
           : ResponseHeadersModel.fromJson(
               json['headers'] as JSON,
             ),
-      body: json['body'] == null ? json as T : json['body'] as T,
+     body: _parseBody<T>(json['body']),
     );
   }
   final ResponseHeadersModel? headers;
