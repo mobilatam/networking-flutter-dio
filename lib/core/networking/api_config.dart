@@ -21,6 +21,7 @@ class ApiRest {
 
   static Future<void> initialize({
     String apiUrl = '',
+    
     bool refreshTokenInterceptor = false,
     required FlutterSecureStorage secureStorage,
     SharedPreferences? sharedPreferences,

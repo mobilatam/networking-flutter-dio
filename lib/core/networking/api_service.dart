@@ -19,9 +19,8 @@ class ApiService implements ApiInterface {
     Object? data,
     bool requiresAuthToken = true,
   }) async {
-    ResponseModel<JSON> response;
     try {
-      response = await _dioService.delete<JSON>(
+      final response = await _dioService.delete(
         endpoint: endpoint,
         data: data,
         options: Options(
@@ -30,21 +29,23 @@ class ApiService implements ApiInterface {
           },
         ),
       );
+      if (response.body is Map) {
+        return converter(response.body);
+      } else {
+        throw FormatException(
+            'Expected Map for body, but got ${response.body.runtimeType}');
+      }
     } on DioException catch (ex) {
       throw CustomException.fromDioException(
         ex,
       );
-    } on Exception catch (ex) {
-      throw CustomException.fromDioException(
-        ex,
-      );
-    }
-
-    try {
-      return converter(response);
-    } on Exception catch (ex) {
+    } on FormatException catch (ex) {
       throw CustomException.fromParsingException(
         ex,
+      );
+    } catch (ex) {
+      throw CustomException.fromDioException(
+        Exception(ex),
       );
     }
   }
@@ -106,9 +107,8 @@ class ApiService implements ApiInterface {
     String? language = 'es',
     bool requiresAuthToken = true,
   }) async {
-    JSON body;
     try {
-      final data = await _dioService.get<JSON>(
+      final data = await _dioService.get(
         endpoint: endpoint,
         queryParams: queryParams,
         options: Options(
@@ -118,23 +118,23 @@ class ApiService implements ApiInterface {
           },
         ),
       );
-
-      body = data.body;
+      if (data.body is Map) {
+        return converter(data.body);
+      } else {
+        throw FormatException(
+            'Expected MAP<> for body, but got ${data.body.runtimeType}');
+      }
     } on DioException catch (ex) {
       throw CustomException.fromDioException(
         ex,
       );
-    } on Exception catch (ex) {
-      throw CustomException.fromDioException(
-        ex,
-      );
-    }
-
-    try {
-      return converter(body);
-    } on Exception catch (ex) {
+    } on FormatException catch (ex) {
       throw CustomException.fromParsingException(
         ex,
+      );
+    } catch (ex) {
+      throw CustomException.fromDioException(
+        Exception(ex),
       );
     }
   }
@@ -148,10 +148,8 @@ class ApiService implements ApiInterface {
     bool requiresAuthToken = true,
     void Function(int count, int total)? onSendProgress,
   }) async {
-    ResponseModel<JSON> response;
-
     try {
-      response = await _dioService.post<JSON>(
+      final response = await _dioService.post(
         endpoint: endpoint,
         data: data,
         onSendProgress: onSendProgress,
@@ -162,20 +160,24 @@ class ApiService implements ApiInterface {
           },
         ),
       );
+
+      if (response.body is Map) {
+        return converter(response.body);
+      } else {
+        throw FormatException(
+            'Expected Map for body, but got ${response.body.runtimeType}');
+      }
     } on DioException catch (ex) {
       throw CustomException.fromDioException(
         ex,
       );
-    } on Exception catch (ex) {
-      throw CustomException.fromDioException(
-        ex,
-      );
-    }
-    try {
-      return converter(response);
-    } on Exception catch (ex) {
+    } on FormatException catch (ex) {
       throw CustomException.fromParsingException(
         ex,
+      );
+    } catch (ex) {
+      throw CustomException.fromDioException(
+        Exception(ex),
       );
     }
   }
@@ -187,9 +189,8 @@ class ApiService implements ApiInterface {
     required T Function(ResponseModel<JSON> response) converter,
     bool requiresAuthToken = true,
   }) async {
-    ResponseModel<JSON> response;
     try {
-      response = await _dioService.put<JSON>(
+      final response = await _dioService.put(
         endpoint: endpoint,
         data: data,
         options: Options(
@@ -198,21 +199,23 @@ class ApiService implements ApiInterface {
           },
         ),
       );
+      if (response.body is Map) {
+        return converter(response.body);
+      } else {
+        throw FormatException(
+            'Expected Map for body, but got ${response.body.runtimeType}');
+      }
     } on DioException catch (ex) {
       throw CustomException.fromDioException(
         ex,
       );
-    } on Exception catch (ex) {
-      throw CustomException.fromDioException(
-        ex,
-      );
-    }
-
-    try {
-      return converter(response);
-    } on Exception catch (ex) {
+    } on FormatException catch (ex) {
       throw CustomException.fromParsingException(
         ex,
+      );
+    } catch (ex) {
+      throw CustomException.fromDioException(
+        Exception(ex),
       );
     }
   }

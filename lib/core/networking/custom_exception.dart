@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:networking_flutter_dio/core/helper/typedefs.dart';
 
 class CustomException implements Exception {
@@ -26,7 +27,8 @@ class CustomException implements Exception {
             return CustomException(
               exceptionType: ExceptionType.connectTimeoutException,
               statusCode: error.response?.statusCode,
-              message: message ?? 'No se pudo establecer la conexión. Por favor, verifique su conexión a Internet.',
+              message: message ??
+                  'No se pudo establecer la conexión. Por favor, verifique su conexión a Internet.',
             );
           case DioExceptionType.sendTimeout:
             return CustomException(
@@ -44,7 +46,8 @@ class CustomException implements Exception {
             return CustomException(
               exceptionType: ExceptionType.badResponse,
               statusCode: error.response?.statusCode,
-              message: message ?? 'Se produjo un error al procesar la solicitud',
+              message:
+                  message ?? 'Se produjo un error al procesar la solicitud',
             );
           case DioExceptionType.unknown:
             return CustomException(
@@ -62,17 +65,17 @@ class CustomException implements Exception {
             return CustomException(
               exceptionType: ExceptionType.connectionError,
               statusCode: error.response?.statusCode,
-              message: message ?? 'Error de conexión. Por favor, verifique su conexión a Internet.',
+              message: message ??
+                  'Error de conexión. Por favor, verifique su conexión a Internet.',
             );
         }
-      } 
+      }
       if (error is FormatException) {
         return CustomException(
           exceptionType: ExceptionType.formatException,
           message: 'Problemas en obtener los datos',
         );
-      }
-      else {
+      } else {
         return CustomException(
           exceptionType: ExceptionType.unrecognizedException,
           message: 'Ocurrió un error desconocido',
@@ -91,7 +94,13 @@ class CustomException implements Exception {
     }
   }
 
-  factory CustomException.fromParsingException(Exception error) {
+  factory CustomException.fromParsingException(FormatException error) {
+    if ((dotenv.env['DEBUG'] as bool) == true) {
+      return CustomException(
+      exceptionType: ExceptionType.serializationException,
+      message: error.message,
+    );
+    }
     return CustomException(
       exceptionType: ExceptionType.serializationException,
       message: 'Se produjo un error al analizar la respuesta',
