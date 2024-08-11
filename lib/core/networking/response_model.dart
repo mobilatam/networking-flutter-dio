@@ -23,22 +23,12 @@ class ResponseModel<T> {
     if (body == null) {
       throw const FormatException('Body cannot be null');
     }
-
-    if (T is List<Object?> || T is List || T is List<dynamic>) {
-      if (body is List) {
-        return body as T;
-      }else {
-        throw FormatException(
-            'Expected List or Map for body, but got ${body.runtimeType}');
-      }
+ if (body is List) {
+      return body as T;
+    } else if (body is Map) {
+      return body as T;
     } else {
-      // Para tipos que no son List, asumimos que es un Map (JSON)
-      if (body is Map) {
-        return body as T;
-      } else {
-        throw FormatException(
-            'Expected Map for body, but got ${body.runtimeType}');
-      }
+      throw FormatException('Expected List or Map for body, but got ${body.runtimeType}');
     }
   }
 
@@ -49,7 +39,7 @@ class ResponseModel<T> {
           : ResponseHeadersModel.fromJson(
               json['headers'] as JSON,
             ),
-     body: _parseBody<T>(json['body']),
+      body: _parseBody<T>(json['body']),
     );
   }
   final ResponseHeadersModel? headers;
