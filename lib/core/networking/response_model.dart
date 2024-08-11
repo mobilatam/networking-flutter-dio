@@ -24,7 +24,7 @@ class ResponseModel<T> {
       throw const FormatException('Body cannot be null');
     }
 
-    if (T is List) {
+    if (T is List<Object?> || T is List || T is List<dynamic>) {
       if (body is List) {
         return body as T;
       }else {
