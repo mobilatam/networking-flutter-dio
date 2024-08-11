@@ -95,7 +95,7 @@ class CustomException implements Exception {
   }
 
   factory CustomException.fromParsingException(FormatException error) {
-    if ((dotenv.env['DEBUG'] as bool) == true) {
+    if (dotenv.env['DEBUG'] == 'true') {
       return CustomException(
       exceptionType: ExceptionType.serializationException,
       message: error.message,
