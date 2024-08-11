@@ -12,8 +12,6 @@ class CustomException implements Exception {
 
   factory CustomException.fromDioException(Exception error) {
     try {
-    print(error.toString());
-
       if (error is DioException) {
         final responseData = error.response?.data as JSON?;
         final message = responseData?['message'] as String?;
@@ -67,7 +65,14 @@ class CustomException implements Exception {
               message: message ?? 'Error de conexión. Por favor, verifique su conexión a Internet.',
             );
         }
-      } else {
+      } 
+      if (error is FormatException) {
+        return CustomException(
+          exceptionType: ExceptionType.formatException,
+          message: 'Problemas en obtener los datos',
+        );
+      }
+      else {
         return CustomException(
           exceptionType: ExceptionType.unrecognizedException,
           message: 'Ocurrió un error desconocido',

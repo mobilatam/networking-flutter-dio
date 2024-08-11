@@ -58,9 +58,8 @@ class ApiService implements ApiInterface {
     bool requiresAuthToken = true,
   }) async {
     List<Object?> body;
-
     try {
-      final data = await _dioService.get<List<Object?>>(
+      final data = await _dioService.get(
         endpoint: endpoint,
         options: Options(
           extra: <String, Object?>{
@@ -70,14 +69,20 @@ class ApiService implements ApiInterface {
         ),
         queryParams: queryParams,
       );
-      body = data.body;
-      return body
-          .map(
-            (dataMap) => converter(
-              dataMap! as JSON,
-            ),
-          )
-          .toList();
+
+      if (data.body is List) {
+        body = data.body;
+        return body
+            .map(
+              (dataMap) => converter(
+                dataMap! as JSON,
+              ),
+            )
+            .toList();
+      } else {
+        throw FormatException(
+            'Expected List for body, but got ${data.body.runtimeType}');
+      }
     } on DioException catch (ex) {
       throw CustomException.fromDioException(
         ex,
