@@ -73,9 +73,11 @@ class DioService {
       endpoint,
       data: data,
       options: options,
-      onSendProgress: (count, total) {
-        onSendProgress?.call(count, total);
-      },
+      onSendProgress: onSendProgress == null
+          ? null
+          : (count, total) {
+              onSendProgress.call(count, total);
+            },
     );
 
     return ResponseModel<R>.fromJson(response.data!);
