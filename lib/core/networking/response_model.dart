@@ -23,13 +23,7 @@ class ResponseModel<T> {
     if (body == null) {
       throw const FormatException('Body cannot be null');
     }
- if (body is List) {
-      return body as T;
-    } else if (body is Map) {
-      return body as T;
-    } else {
-      throw FormatException('Expected List or Map for body, but got ${body.runtimeType}');
-    }
+    return body as T;
   }
 
   factory ResponseModel.fromJson(JSON json) {

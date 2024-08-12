@@ -165,8 +165,11 @@ class ApiService implements ApiInterface {
       );
 
       if (response.body is Map) {
-        ResponseModel<JSON> reponseFormat = response as ResponseModel<JSON>;
-        return converter(reponseFormat);
+         final typedResponse = ResponseModel<JSON>(
+          body: response.body as JSON,
+          headers: response.headers,
+        );
+        return converter(typedResponse);
       } else {
         throw FormatException(
             'Expected Map for body, but got ${response.body.runtimeType}');
