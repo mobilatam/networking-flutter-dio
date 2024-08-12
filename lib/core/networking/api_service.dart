@@ -165,8 +165,7 @@ class ApiService implements ApiInterface {
       );
 
       if (response.body is Map) {
-        ResponseModel<JSON> reponseFormat =
-            response.body as ResponseModel<JSON>;
+        ResponseModel<JSON> reponseFormat = response as ResponseModel<JSON>;
         return converter(reponseFormat);
       } else {
         throw FormatException(
