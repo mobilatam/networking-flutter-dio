@@ -110,7 +110,7 @@ class ApiService implements ApiInterface {
     bool requiresAuthToken = true,
   }) async {
     try {
-      final data = await _dioService.get(
+      final data = await _dioService.get<JSON>(
         endpoint: endpoint,
         queryParams: queryParams,
         options: Options(
@@ -120,13 +120,8 @@ class ApiService implements ApiInterface {
           },
         ),
       );
-      if (data.body is Map) {
-        JSON reponseFormat = data.body as JSON;
-        return converter(reponseFormat);
-      } else {
-        throw FormatException(
-            'Expected MAP<> for body, but got ${data.body.runtimeType}');
-      }
+
+      return converter(data.body);
     } on DioException catch (ex) {
       throw CustomException.fromDioException(
         ex,
@@ -152,7 +147,7 @@ class ApiService implements ApiInterface {
     void Function(int count, int total)? onSendProgress,
   }) async {
     try {
-      final response = await _dioService.post(
+      final response = await _dioService.post<JSON>(
         endpoint: endpoint,
         data: data,
         onSendProgress: onSendProgress,
@@ -164,16 +159,7 @@ class ApiService implements ApiInterface {
         ),
       );
 
-      if (response.body is Map) {
-         final typedResponse = ResponseModel<JSON>(
-          body: response.body as JSON,
-          headers: response.headers,
-        );
-        return converter(typedResponse);
-      } else {
-        throw FormatException(
-            'Expected Map for body, but got ${response.body.runtimeType}');
-      }
+      return converter(response);
     } on DioException catch (ex) {
       throw CustomException.fromDioException(
         ex,
@@ -197,7 +183,7 @@ class ApiService implements ApiInterface {
     bool requiresAuthToken = true,
   }) async {
     try {
-      final response = await _dioService.put(
+      final response = await _dioService.put<JSON>(
         endpoint: endpoint,
         data: data,
         options: Options(
@@ -206,14 +192,8 @@ class ApiService implements ApiInterface {
           },
         ),
       );
-      if (response.body is Map) {
-        ResponseModel<JSON> reponseFormat =
-            response.body as ResponseModel<JSON>;
-        return converter(reponseFormat);
-      } else {
-        throw FormatException(
-            'Expected Map for body, but got ${response.body.runtimeType}');
-      }
+
+      return converter(response);
     } on DioException catch (ex) {
       throw CustomException.fromDioException(
         ex,
