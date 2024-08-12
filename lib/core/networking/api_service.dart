@@ -30,7 +30,9 @@ class ApiService implements ApiInterface {
         ),
       );
       if (response.body is Map) {
-        return converter(response.body);
+        ResponseModel<JSON> reponseFormat =
+            response.body as ResponseModel<JSON>;
+        return converter(reponseFormat);
       } else {
         throw FormatException(
             'Expected Map for body, but got ${response.body.runtimeType}');
@@ -58,7 +60,6 @@ class ApiService implements ApiInterface {
     String? language = 'es',
     bool requiresAuthToken = true,
   }) async {
-    List<Object?> body;
     try {
       final data = await _dioService.get(
         endpoint: endpoint,
@@ -72,6 +73,7 @@ class ApiService implements ApiInterface {
       );
 
       if (data.body is List) {
+        List<Object?> body = data.body as List<Object?>;
         body = data.body;
         return body
             .map(
@@ -119,7 +121,8 @@ class ApiService implements ApiInterface {
         ),
       );
       if (data.body is Map) {
-        return converter(data.body);
+        JSON reponseFormat = data.body as JSON;
+        return converter(reponseFormat);
       } else {
         throw FormatException(
             'Expected MAP<> for body, but got ${data.body.runtimeType}');
@@ -162,7 +165,9 @@ class ApiService implements ApiInterface {
       );
 
       if (response.body is Map) {
-        return converter(response.body);
+        ResponseModel<JSON> reponseFormat =
+            response.body as ResponseModel<JSON>;
+        return converter(reponseFormat);
       } else {
         throw FormatException(
             'Expected Map for body, but got ${response.body.runtimeType}');
@@ -200,7 +205,9 @@ class ApiService implements ApiInterface {
         ),
       );
       if (response.body is Map) {
-        return converter(response.body);
+        ResponseModel<JSON> reponseFormat =
+            response.body as ResponseModel<JSON>;
+        return converter(reponseFormat);
       } else {
         throw FormatException(
             'Expected Map for body, but got ${response.body.runtimeType}');
