@@ -32,7 +32,9 @@ class ApiRest {
     final baseOptions = BaseOptions(
       persistentConnection: true,
       baseUrl: apiUrl,
-      connectTimeout: const Duration(seconds: 20),
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      sendTimeout: const Duration(seconds: 30),
     );
     final dio = Dio(baseOptions);
     final interceptors = <Interceptor>[

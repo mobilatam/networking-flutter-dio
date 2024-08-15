@@ -22,8 +22,6 @@ class RefreshTokenInterceptor extends Interceptor {
   final String? authUserKey;
   final String? authTokenRefreshKey;
   final String? authTokenKey;
-  
-  
 
   final Dio _dio;
 
@@ -40,9 +38,26 @@ class RefreshTokenInterceptor extends Interceptor {
     print(err.requestOptions.uri);
     print(err.requestOptions.data.toString());
     if (err.response != null) {
-      final data = err.response?.data as JSON?;
-      final headers = data?['errors'] as JSON?;
+      var responseData = err.response?.data;
+      JSON? data;
 
+      // Intenta parsear la respuesta como JSON si es una cadena
+      if (responseData is String) {
+        try {
+          data = json.decode(responseData) as JSON?;
+        } catch (e) {
+          print('Response is not a valid JSON: $responseData');
+          // Si no es JSON válido, maneja el error aquí
+          return super.onError(err, handler);
+        }
+      } else if (responseData is Map<String, dynamic>) {
+        data = responseData;
+      } else {
+        print('Unexpected response type: ${responseData.runtimeType}');
+        return super.onError(err, handler);
+      }
+
+      final headers = data?['errors'] as JSON?;
       final code = headers?['name'] as String?;
 
       if (code == tokenExpiredException) {
@@ -70,7 +85,6 @@ class RefreshTokenInterceptor extends Interceptor {
           final response = await _dio.request<JSON>(
             err.requestOptions.path,
             data: err.requestOptions.data,
-
             cancelToken: err.requestOptions.cancelToken,
             options: Options(
               headers: <String, Object?>{'Authorization': 'Bearer $newToken'},
@@ -141,7 +155,8 @@ class RefreshTokenInterceptor extends Interceptor {
 
   Future<String?> getToken() async {
     try {
-      var token = await secureStorage.read(key: authTokenRefreshKey ?? "NO_TOKEN");
+      var token =
+          await secureStorage.read(key: authTokenRefreshKey ?? "NO_TOKEN");
 
       if (token == null) {
         return null;
