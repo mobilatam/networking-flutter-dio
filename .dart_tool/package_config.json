@@ -33,7 +33,7 @@
     },
     {
       "name": "dio",
-      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/dio-5.5.0+1",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/dio-5.6.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -362,7 +362,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-08-15T20:06:14.986487Z",
+  "generated": "2024-08-16T16:07:43.686113Z",
   "generator": "pub",
   "generatorVersion": "3.5.0",
   "flutterRoot": "file:///Users/miguelangelflores/fvm/versions/stable",
