@@ -21,7 +21,7 @@ class ApiRest {
 
   static Future<void> initialize({
     String apiUrl = '',
-    
+    String language = 'es',
     bool refreshTokenInterceptor = false,
     required FlutterSecureStorage secureStorage,
     SharedPreferences? sharedPreferences,
@@ -31,6 +31,9 @@ class ApiRest {
   }) async {
     final baseOptions = BaseOptions(
       persistentConnection: true,
+      headers: {
+        'Accept-Language': language
+      },
       baseUrl: apiUrl,
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
