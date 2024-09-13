@@ -362,10 +362,10 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-09-11T21:13:28.184572Z",
+  "generated": "2024-09-13T13:04:50.531273Z",
   "generator": "pub",
-  "generatorVersion": "3.5.2",
+  "generatorVersion": "3.5.3",
   "flutterRoot": "file:///Users/miguelangelflores/fvm/versions/stable",
-  "flutterVersion": "3.24.2",
+  "flutterVersion": "3.24.3",
   "pubCache": "file:///Users/miguelangelflores/.pub-cache"
 }

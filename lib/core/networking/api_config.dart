@@ -21,7 +21,7 @@ class ApiRest {
 
   static Future<void> initialize({
     String apiUrl = '',
-    String language = 'es',
+    String language = 'es-ES',
     bool refreshTokenInterceptor = false,
     required FlutterSecureStorage secureStorage,
     SharedPreferences? sharedPreferences,
