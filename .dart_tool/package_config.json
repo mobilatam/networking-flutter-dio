@@ -33,7 +33,7 @@
     },
     {
       "name": "dio",
-      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/dio-5.6.0",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/dio-5.7.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -237,9 +237,9 @@
     },
     {
       "name": "shared_preferences",
-      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences-2.3.1",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences-2.3.2",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.4"
     },
     {
       "name": "shared_preferences_android",
@@ -362,7 +362,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-09-13T13:04:50.531273Z",
+  "generated": "2024-09-15T20:51:14.519577Z",
   "generator": "pub",
   "generatorVersion": "3.5.3",
   "flutterRoot": "file:///Users/miguelangelflores/fvm/versions/stable",
