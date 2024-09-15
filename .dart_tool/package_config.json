@@ -237,9 +237,9 @@
     },
     {
       "name": "shared_preferences",
-      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences-2.3.2",
+      "rootUri": "file:///Users/miguelangelflores/.pub-cache/hosted/pub.dev/shared_preferences-2.3.1",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "3.3"
     },
     {
       "name": "shared_preferences_android",
@@ -362,7 +362,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-09-15T20:51:14.519577Z",
+  "generated": "2024-09-15T20:52:36.712237Z",
   "generator": "pub",
   "generatorVersion": "3.5.3",
   "flutterRoot": "file:///Users/miguelangelflores/fvm/versions/stable",
