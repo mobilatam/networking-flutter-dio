@@ -2,41 +2,28 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:networking_flutter_dio/core/helper/typedefs.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:networking_flutter_dio/core/local/key_value_storage_base.dart';
+import 'package:networking_flutter_dio/core/local/variables.dart';
 
 class RefreshTokenInterceptor extends Interceptor {
   RefreshTokenInterceptor({
     required Dio dioClient,
     this.urlTokenRefreshServer,
-    required this.secureStorage,
-    this.sharedPreferences,
-    this.authUserKey,
-    this.authTokenRefreshKey,
-    this.authTokenKey,
   }) : _dio = dioClient;
   final String? urlTokenRefreshServer;
-  final FlutterSecureStorage secureStorage;
-  final SharedPreferences? sharedPreferences;
-  final String? authUserKey;
-  final String? authTokenRefreshKey;
-  final String? authTokenKey;
 
   final Dio _dio;
 
   String get tokenExpiredException => 'TokenExpiredError';
+  KeyValueStorageBase keyValueStorageBase = KeyValueStorageBase();
 
   @override
   Future<void> onError(
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-    print(err.response.toString());
-    print(err.type.toString());
-    print(err.requestOptions.path.toString());
-    print(err.requestOptions.uri);
-    print(err.requestOptions.data.toString());
+
     if (err.response != null) {
       var responseData = err.response?.data;
       JSON? data;
@@ -46,14 +33,12 @@ class RefreshTokenInterceptor extends Interceptor {
         try {
           data = json.decode(responseData) as JSON?;
         } catch (e) {
-          print('Response is not a valid JSON: $responseData');
           // Si no es JSON válido, maneja el error aquí
           return super.onError(err, handler);
         }
       } else if (responseData is Map<String, dynamic>) {
         data = responseData;
       } else {
-        print('Unexpected response type: ${responseData.runtimeType}');
         return super.onError(err, handler);
       }
 
@@ -142,7 +127,7 @@ class RefreshTokenInterceptor extends Interceptor {
 
   String? getUserId() {
     try {
-      final dataMap = sharedPreferences?.getString(authUserKey ?? 'NO-KEY');
+      final dataMap = keyValueStorageBase.sharedPrefs.getString(GlobalVariables.authUserKey );
       if (dataMap == null) {
         return null;
       }
@@ -156,7 +141,7 @@ class RefreshTokenInterceptor extends Interceptor {
   Future<String?> getToken() async {
     try {
       var token =
-          await secureStorage.read(key: authTokenRefreshKey ?? "NO_TOKEN");
+          await keyValueStorageBase.secureStorage.read(key: GlobalVariables.authTokenRefreshKey );
 
       if (token == null) {
         return null;
@@ -168,6 +153,6 @@ class RefreshTokenInterceptor extends Interceptor {
   }
 
   Future<void> setAuthToken(String tokenNew) async {
-    await secureStorage.write(key: authTokenKey ?? "NO_TOKEN", value: tokenNew);
+    await keyValueStorageBase.secureStorage.write(key: GlobalVariables.authTokenKey , value: tokenNew);
   }
 }

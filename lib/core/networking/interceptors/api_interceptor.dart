@@ -1,20 +1,16 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:networking_flutter_dio/core/local/key_value_storage_base.dart';
 
 class ApiInterceptor extends Interceptor {
-  ApiInterceptor({
-    required this.secureStorage,
-    required this.authTokenKey,
-  }) : super();
+  ApiInterceptor() : super();
 
-  final FlutterSecureStorage secureStorage;
-  final String authTokenKey;
+
 
   static final _authStreamController = StreamController<bool>.broadcast();
   static Stream<bool> get verifyTokenStream => _authStreamController.stream;
-
+  final _keyValueStorage = KeyValueStorageBase();
   static void initialTokenStreamValue(bool initialValue) {
     _authStreamController.add(initialValue);
   }
@@ -36,7 +32,7 @@ class ApiInterceptor extends Interceptor {
   ) async {
     if (options.extra.containsKey('requiresAuthToken')) {
       if (options.extra['requiresAuthToken'] == true) {
-        var token = await secureStorage.read(key: authTokenKey) ?? "NO_TOKEN";
+        var token = await _keyValueStorage.secureStorage.read(key: '') ?? "NO_TOKEN";
         options.headers.addAll(
           {
             'Authorization': 'Bearer $token',

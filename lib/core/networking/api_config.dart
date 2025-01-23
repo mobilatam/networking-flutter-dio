@@ -1,12 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:networking_flutter_dio/core/networking/api_service.dart';
 import 'package:networking_flutter_dio/core/networking/dio_service.dart';
 import 'package:networking_flutter_dio/core/networking/interceptors/api_interceptor.dart';
 import 'package:networking_flutter_dio/core/networking/interceptors/logging_interceptor.dart';
 import 'package:networking_flutter_dio/core/networking/interceptors/refresh_token_interceptor.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiRest {
   factory ApiRest() {
@@ -23,10 +20,6 @@ class ApiRest {
     String apiUrl = '',
     String language = 'es-ES',
     bool refreshTokenInterceptor = false,
-    required FlutterSecureStorage secureStorage,
-    SharedPreferences? sharedPreferences,
-    required String authTokenKey,
-    String? authTokenRefreshKey,
     String? authUserKey,
   }) async {
     final baseOptions = BaseOptions(
@@ -42,17 +35,10 @@ class ApiRest {
     final dio = Dio(baseOptions);
     final interceptors = <Interceptor>[
       ApiInterceptor(
-        secureStorage: secureStorage,
-        authTokenKey: authTokenKey,
       ),
       if (refreshTokenInterceptor)
         RefreshTokenInterceptor(
           dioClient: dio,
-          secureStorage: secureStorage,
-          authTokenRefreshKey: authTokenRefreshKey,
-          authTokenKey: authTokenKey,
-          sharedPreferences: sharedPreferences,
-          authUserKey: authUserKey,
           urlTokenRefreshServer: '$apiUrl/auth/refresh-token',
         ),
       LoggingInterceptor(),
