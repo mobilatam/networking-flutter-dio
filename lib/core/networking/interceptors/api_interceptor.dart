@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:networking_flutter_dio/core/local/key_value_storage_base.dart';
+import 'package:networking_flutter_dio/core/local/variables.dart';
 
 class ApiInterceptor extends Interceptor {
   ApiInterceptor() : super();
@@ -32,7 +33,7 @@ class ApiInterceptor extends Interceptor {
   ) async {
     if (options.extra.containsKey('requiresAuthToken')) {
       if (options.extra['requiresAuthToken'] == true) {
-        var token = await _keyValueStorage.secureStorage.read(key: '') ?? "NO_TOKEN";
+        var token = await _keyValueStorage.secureStorage.read(key: GlobalVariables.authTokenKey) ?? "NO_TOKEN";
         options.headers.addAll(
           {
             'Authorization': 'Bearer $token',
