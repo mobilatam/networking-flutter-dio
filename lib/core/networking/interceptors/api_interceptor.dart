@@ -33,7 +33,7 @@ class ApiInterceptor extends Interceptor {
   ) async {
     if (options.extra.containsKey('requiresAuthToken')) {
       if (options.extra['requiresAuthToken'] == true) {
-        var token = await _keyValueStorage.secureStorage.read(key: GlobalVariables.authTokenKey) ?? "NO_TOKEN";
+        var token =  _keyValueStorage.sharedPrefs.getString( GlobalVariables.authTokenKey) ?? "NO_TOKEN";
         options.headers.addAll(
           {
             'Authorization': 'Bearer $token',

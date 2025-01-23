@@ -106,7 +106,7 @@ class RefreshTokenInterceptor extends Interceptor {
       final responseData = response.data as JSON;
       final body = responseData['body'] as JSON;
       final token = body['token'] as String;
-      await setAuthToken(token);
+       setAuthToken(token);
       return token;
     } on Exception catch (ex) {
       debugPrint('\t--> ERROR');
@@ -141,18 +141,16 @@ class RefreshTokenInterceptor extends Interceptor {
   Future<String?> getToken() async {
     try {
       var token =
-          await keyValueStorageBase.secureStorage.read(key: GlobalVariables.authTokenRefreshKey );
+           keyValueStorageBase.sharedPrefs.getString( GlobalVariables.authTokenRefreshKey ) ?? "NO_TOKEN";
 
-      if (token == null) {
-        return null;
-      }
+      
       return token;
     } catch (e) {
       return null;
     }
   }
 
-  Future<void> setAuthToken(String tokenNew) async {
-    await keyValueStorageBase.secureStorage.write(key: GlobalVariables.authTokenKey , value: tokenNew);
+  void setAuthToken(String tokenNew)  {
+     keyValueStorageBase.sharedPrefs.setString( GlobalVariables.authTokenKey ,  tokenNew);
   }
 }
