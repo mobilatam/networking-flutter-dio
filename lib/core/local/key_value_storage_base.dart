@@ -92,6 +92,16 @@ class KeyValueStorageBase {
     }
   }
 
+  Future<bool> deletePreference(String key) {
+    try {
+      _sharedPrefs!.remove(key);
+      return Future.value(true);
+    } on PlatformException catch (ex) {
+      logInfo('$ex');
+      return Future.value(false);
+    }
+  }
+
   SharedPreferences get sharedPrefs => _sharedPrefs!;
   FlutterSecureStorage get secureStorage => _secureStorage!;
   static Future<void> init() async {
