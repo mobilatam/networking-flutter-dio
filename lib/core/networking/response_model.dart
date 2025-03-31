@@ -27,13 +27,15 @@ class ResponseModel<T> {
   }
 
   factory ResponseModel.fromJson(JSON json) {
+    final data = json['body']['data'];
+
     return ResponseModel(
       headers: json['headers'] == null
           ? null
           : ResponseHeadersModel.fromJson(
               json['headers'] as JSON,
             ),
-      body: _parseBody<T>(json['body']),
+      body: _parseBody<T>(data),
     );
   }
   final ResponseHeadersModel? headers;
