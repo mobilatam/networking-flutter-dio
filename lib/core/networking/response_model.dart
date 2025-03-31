@@ -20,22 +20,27 @@ class ResponseModel<T> {
   });
 
   static T _parseBody<T>(dynamic body) {
-    if (body == null) {
-      throw const FormatException('Body cannot be null');
+    final data = body['data'];
+
+    try {
+      if (body['success'] && data == null) {
+        return {'message': body['message']} as T;
+      }
+
+      return data as T;
+    } catch (e) {
+      rethrow;
     }
-    return body as T;
   }
 
   factory ResponseModel.fromJson(JSON json) {
-    final data = json['body']['data'];
-
     return ResponseModel(
       headers: json['headers'] == null
           ? null
           : ResponseHeadersModel.fromJson(
               json['headers'] as JSON,
             ),
-      body: _parseBody<T>(data),
+      body: _parseBody<T>(json['body']),
     );
   }
   final ResponseHeadersModel? headers;
