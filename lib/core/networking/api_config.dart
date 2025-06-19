@@ -6,15 +6,14 @@ import 'package:networking_flutter_dio/core/networking/interceptors/logging_inte
 import 'package:networking_flutter_dio/core/networking/interceptors/refresh_token_interceptor.dart';
 
 class ApiRest {
-  factory ApiRest() {
-    return _instance;
-  }
+  factory ApiRest() => _instance;
   ApiRest._internal();
+
   static final ApiRest _instance = ApiRest._internal();
-
   late ApiService instance;
-
   ApiService get service => instance;
+
+  late final Dio _dio;
 
   static Future<void> initialize({
     String apiUrl = '',
@@ -24,18 +23,18 @@ class ApiRest {
   }) async {
     final baseOptions = BaseOptions(
       persistentConnection: true,
-      headers: {
-        'Accept-Language': language
-      },
+      headers: { 'Accept-Language': language },
       baseUrl: apiUrl,
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       sendTimeout: const Duration(seconds: 30),
     );
-    final dio = Dio(baseOptions);
+
+    final dio =  Dio(baseOptions);
+    _instance._dio = dio;
+
     final interceptors = <Interceptor>[
-      ApiInterceptor(
-      ),
+      ApiInterceptor(),
       if (refreshTokenInterceptor)
         RefreshTokenInterceptor(
           dioClient: dio,
@@ -43,12 +42,13 @@ class ApiRest {
         ),
       LoggingInterceptor(),
     ];
+
     dio.interceptors.addAll(interceptors);
-    final dioService = DioService(
-      dioClient: dio,
-    );
-    _instance.instance = ApiService(
-      dioService,
-    );
+    final dioService = DioService(dioClient: dio);
+    _instance.instance = ApiService(dioService);
+  }
+
+    void setLanguage(String languageCode) {
+    _dio.options.headers['Accept-Language'] = languageCode;
   }
 }
