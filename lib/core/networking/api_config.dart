@@ -33,12 +33,13 @@ class ApiRest {
     final dio =  Dio(baseOptions);
     _instance._dio = dio;
 
+    //TODO: la direccion deberia de ser dinamica para que se pueda configurar
     final interceptors = <Interceptor>[
       ApiInterceptor(),
       if (refreshTokenInterceptor)
         RefreshTokenInterceptor(
           dioClient: dio,
-          urlTokenRefreshServer: '$apiUrl/auth/refresh-token',
+          urlTokenRefreshServer: '$apiUrl/mobile/auth/refresh-token',
         ),
       LoggingInterceptor(),
     ];

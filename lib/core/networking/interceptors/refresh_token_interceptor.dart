@@ -23,7 +23,6 @@ class RefreshTokenInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-
     if (err.response != null) {
       var responseData = err.response?.data;
       JSON? data;
@@ -42,17 +41,13 @@ class RefreshTokenInterceptor extends Interceptor {
         return super.onError(err, handler);
       }
 
-      final headers = data?['errors'] as JSON?;
-      final code = headers?['name'] as String?;
+      final errorName = data?['message'] as String?;
 
-      if (code == tokenExpiredException) {
-        var userId = getUserId();
+      if (errorName == tokenExpiredException) {
         var token = await getToken();
         final tokenDio = Dio()..options = _dio.options;
-        if (userId != null && token != null) {
-          final id = userId;
+        if (token != null) {
           final data = {
-            'username': id,
             'refreshtoken': token,
           };
 
@@ -105,8 +100,10 @@ class RefreshTokenInterceptor extends Interceptor {
       debugPrint('<-- END REFRESH');
       final responseData = response.data as JSON;
       final body = responseData['body'] as JSON;
-      final token = body['token'] as String;
-       setAuthToken(token);
+      final token = body['data']['token'] as String;
+
+      setAuthToken(token);
+
       return token;
     } on Exception catch (ex) {
       debugPrint('\t--> ERROR');
@@ -127,7 +124,8 @@ class RefreshTokenInterceptor extends Interceptor {
 
   String? getUserId() {
     try {
-      final dataMap = keyValueStorageBase.sharedPrefs.getString(GlobalVariables.authUserKey );
+      final dataMap = keyValueStorageBase.sharedPrefs
+          .getString(GlobalVariables.authUserKey);
       if (dataMap == null) {
         return null;
       }
@@ -140,17 +138,21 @@ class RefreshTokenInterceptor extends Interceptor {
 
   Future<String?> getToken() async {
     try {
-      var token =
-           keyValueStorageBase.sharedPrefs.getString( GlobalVariables.authTokenRefreshKey ) ?? "NO_TOKEN";
+      var token = keyValueStorageBase.sharedPrefs.getString(
+            GlobalVariables.authTokenRefreshKey,
+          ) ??
+          "NO_TOKEN";
 
-      
       return token;
     } catch (e) {
       return null;
     }
   }
 
-  void setAuthToken(String tokenNew)  {
-     keyValueStorageBase.sharedPrefs.setString( GlobalVariables.authTokenKey ,  tokenNew);
+  void setAuthToken(String tokenNew) {
+    keyValueStorageBase.sharedPrefs.setString(
+      GlobalVariables.authTokenKey,
+      tokenNew,
+    );
   }
 }
