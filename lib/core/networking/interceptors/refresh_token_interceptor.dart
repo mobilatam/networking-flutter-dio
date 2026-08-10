@@ -41,7 +41,10 @@ class RefreshTokenInterceptor extends Interceptor {
         return super.onError(err, handler);
       }
 
-      final errorName = data?['message'] as String?;
+      final errors = data?['errors'];
+      final errorName = errors is Map
+          ? errors['name'] as String?
+          : data?['message'] as String?;
 
       if (errorName == tokenExpiredException) {
         var token = await getToken();
