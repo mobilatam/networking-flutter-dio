@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:networking_flutter_dio/core/helper/typedefs.dart';
 
@@ -12,6 +13,10 @@ class CustomException implements Exception {
         name = exceptionType.name;
 
   factory CustomException.fromDioException(Exception error) {
+    // TODO(debug): remove temporary diagnostic log.
+    debugPrint(
+      '[CustomException] raw error type: ${error.runtimeType} -> $error',
+    );
     try {
       if (error is DioException) {
         final responseData = error.response?.data as JSON?;
