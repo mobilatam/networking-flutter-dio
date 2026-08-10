@@ -48,7 +48,7 @@ class RefreshTokenInterceptor extends Interceptor {
         final tokenDio = Dio()..options = _dio.options;
         if (token != null) {
           final data = {
-            'refreshtoken': token,
+            'refreshToken': token,
           };
 
           final newToken = await _refreshTokenRequest(
@@ -100,7 +100,7 @@ class RefreshTokenInterceptor extends Interceptor {
       debugPrint('<-- END REFRESH');
       final responseData = response.data as JSON;
       final body = responseData['body'] as JSON;
-      final token = body['data']['token'] as String;
+      final token = body['token'] as String;
 
       setAuthToken(token);
 
